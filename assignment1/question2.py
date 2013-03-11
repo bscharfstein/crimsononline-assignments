@@ -14,7 +14,21 @@ def parse_links_regex(filename):
 
     What does it make the most sense to do here? 
     """
-    pass
+    try:
+        import re
+        #from lxml import etree
+        with open(filename) as f:
+            data = f.read()
+        urls = re.findall('<a.+href=[\'|\"](.+)[\'|\"].*?>(.+)</a>', data)
+        dictionary = {}
+        for url in urls:
+            if url[1] not in dictionary.keys():
+                dictionary[url[1]] = [url[0]]
+            elif url[0] not in dictionary[url[1]]:
+                result[url[1]].append(m[0])
+        return dictionary
+    except IOError, e:
+        print "Sorry, that is not a valid file"
 
 def parse_links_xpath(filename):
     """question 2b
@@ -24,4 +38,18 @@ def parse_links_xpath(filename):
     
     Which approach is better? (Hint: http://goo.gl/mzl9t)
     """
-    pass
+    #This approach is much better because it deals with corner cases more elegantly
+    from lxml import etree
+    try:
+        urls = etree.parse(filename, etree.HTMLParser()).xpath("//a")
+        dictionary = {}
+        for url in urls:
+            if url.text not in dictionary.keys():
+                dictionary[url.text] = [url.get("href")]
+            elif url.get("href") not in dictionary[url.text]:
+                dictionary[url.text].append(url.get("href"))
+        return dictionary
+
+    except IOError:
+        print "Sorry, that is not a valid file"
+
