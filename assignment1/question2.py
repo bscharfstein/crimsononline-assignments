@@ -30,6 +30,7 @@ def parse_links_regex(filename):
     except IOError, e:
         print "Sorry, that is not a valid file"
 
+
 def parse_links_xpath(filename):
     """question 2b
 
@@ -40,6 +41,7 @@ def parse_links_xpath(filename):
     """
     #This approach is much better because it deals with corner cases more elegantly
     from lxml import etree
+
     try:
         urls = etree.parse(filename, etree.HTMLParser()).xpath("//a")
         dictionary = {}

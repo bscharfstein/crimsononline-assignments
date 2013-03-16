@@ -112,3 +112,6 @@ class House(building)
     def where_is(self, person):
         print("not a valid function for Houses")
 
+
+
+#don't know how to do g...
